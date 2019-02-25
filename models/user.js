@@ -27,31 +27,31 @@ class User {
         return this._name;
     }
 
-    get gender(){
+    get gender() {
         return this._gender;
     }
 
-    get birth(){
+    get birth() {
         return this._birth;
     }
 
-    get country(){
+    get country() {
         return this._country;
     }
 
-    get email(){
+    get email() {
         return this._email;
     }
 
-    get password(){
-        return this._password;
-    }
-
-    get photo(){
+    get photo() {
         return this._photo;
     }
 
-    get admin(){
+    get password() {
+        return this._password;
+    }
+
+    get admin() {
         return this._admin;
     }
 
@@ -62,23 +62,25 @@ class User {
     loadFromJSON(json){
 
         for (let name in json){
-
+            
             switch(name){
 
                 case '_register':
                     this[name] = new Date(json[name]);
                 break;
                 default:
-                this[name] = json[name];
+                    this[name] = json[name];
 
             }
+            
+
         }
 
     }
 
-    static getUsersStorage(){
+    static getUsersStorage() {
 
-        let users = []; //or new Array
+        let users = [];
 
         if (localStorage.getItem("users")) {
 
@@ -98,7 +100,7 @@ class User {
 
         usersID++;
 
-        localStorage.setItem("userID", usersID);
+        localStorage.setItem("usersID", usersID);
 
         return usersID;
 
@@ -106,13 +108,13 @@ class User {
 
     save(){
 
-        let users = User.getUserStorage();
+        let users = User.getUsersStorage();
 
-        if (this.id > 0){
-
+        if (this.id > 0) {
+            
             users.map(u=>{
 
-                if(u._id == this.id){
+                if (u._id == this.id) {
 
                     Object.assign(u, this);
 
@@ -120,13 +122,13 @@ class User {
 
                 return u;
 
-            })
+            });
 
-        }else{
+        } else {
 
             this._id = this.getNewID();
 
-            users.push(data);
+            users.push(this);
 
         }
 
@@ -136,16 +138,16 @@ class User {
 
     remove(){
 
-        let users = User.getUserStorage();
+        let users = User.getUsersStorage();
 
-        users.forEach((userData, index) => {
+        users.forEach((userData, index)=>{
 
-            if ( this._id == userData._id ) {
+            if (this._id == userData._id) {
 
                 users.splice(index, 1);
 
             }
-            
+
         });
 
         localStorage.setItem("users", JSON.stringify(users));
